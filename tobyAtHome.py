@@ -6,19 +6,20 @@ import soundfile as sf
 import tempfile
 import os
 from deep_translator import GoogleTranslator
-import time
 from openai import RateLimitError
 
 
-client = OpenAI(api_key='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')
+client = OpenAI(api_key='')
 
-filename = "/Users/wj/Documents/sample/recording.wav"
+filename = ""
 
 
 model = whisper.load_model("base")
 
 
-translator = GoogleTranslator(source='auto', target='zh-CN')
+translator = GoogleTranslator(source='auto', target='fr')
+
+sd.default.device = "MacBook Air Microphone, Core Audio"
 
 def record_audio(duration=5, samplerate=44100):
     print("Recording...")
@@ -30,7 +31,7 @@ def record_audio(duration=5, samplerate=44100):
 def save_recording(recording, filename="recording.wav", samplerate=44100):
     sf.write(filename, recording, samplerate)
 
-def openai_tts(text, lang='zh-CN'):
+def openai_tts(text, lang='en'):
     
     try:
         response = client.audio.speech.create(
@@ -38,7 +39,7 @@ def openai_tts(text, lang='zh-CN'):
             voice="alloy",
             input=text
         )
-        # Use NamedTemporaryFile to create a temporary file
+        
         with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as tmp:
             response.stream_to_file(tmp.name)
             return tmp.name
@@ -49,16 +50,12 @@ def openai_tts(text, lang='zh-CN'):
   
         return None 
     
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as tmp:
-        response.stream_to_file(tmp.name)
-        return tmp.name
-
 while True:
     print("Speak Now")
     recording = record_audio()
     save_recording(recording, filename)
 
-    result = model.transcribe(filename)
+    result = model.transcribe(filename, language="en")
     text = result["text"]
     print(f"You said: {text}")
 
@@ -66,14 +63,13 @@ while True:
         break
 
     translated_text = translator.translate(text)
-    print(f"Translated to Chinese: {translated_text}")
+    print(f"Translated to French: {translated_text}")
 
    
-    tts_file = openai_tts(translated_text, lang='zh-CN')
+    tts_file = openai_tts(translated_text, lang='fr')
     if tts_file:  
         playsound.playsound(tts_file)
         os.remove(tts_file)  
     else:
         print("Could not generate TTS audio. Skipping playback.")
 
-print("Smell you later")
