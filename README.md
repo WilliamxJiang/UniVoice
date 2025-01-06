@@ -2,7 +2,7 @@
 
 ## Overview
 
-tobyAtHome is a cutting-edge real-time voice translation software designed to seamlessly integrate with Zoom and enhance multilingual communication. Built over a weekend, this project demonstrates the power of modern web technologies and cloud-based services to enable smooth and natural multilingual conversations in real-time.
+tobyAtHome (a.k.a UniVoice) is a cutting-edge real-time voice translation software designed to seamlessly integrate with Zoom and enhance multilingual communication. Built over a weekend, this project demonstrates the power of modern web technologies and cloud-based services to enable smooth and natural multilingual conversations in real-time.
 
 ## Inspiration
 
